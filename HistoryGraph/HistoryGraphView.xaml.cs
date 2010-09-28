@@ -67,7 +67,7 @@ namespace GitSharp.Demo.HistoryGraph
             m_revwalk.markStart(((Core.Repository)repo).getAllRefsByPeeledObjectId().Keys.Select(id => m_revwalk.parseCommit(id)));
             list.Source(m_revwalk);
             list.fillTo(1000);
-            lstCommits.ItemsSource = list;
+            this.lstCommits.ItemsSource = list;
         }
 
         private void lstCommits_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -84,7 +84,7 @@ namespace GitSharp.Demo.HistoryGraph
     /// <summary>
     /// FrameworkElement that renders a PlotCommit
     /// </summary>
-    public class PlotCommitElement : FrameworkElement //Would it be better to ext TextBlock
+    public class PlotCommitElement : FrameworkElement //Would it be better to ext TextBlock?
     {
         public static DependencyProperty CurrentCommitProperty;
         public PlotCommit CurrentCommit
@@ -93,17 +93,22 @@ namespace GitSharp.Demo.HistoryGraph
             set { SetValue(CurrentCommitProperty, value); }
         }
 
-        private DrawingContextPlotRender _Render;
+        // Is it more efficient to share one renderer?
+        private static DrawingContextPlotRender _Render = null;
 
         public PlotCommitElement()
         {
             const int LineHeight = 20;
-            // At moment only grabs text styling at creation, could grab dynamically I suppose
-            Typeface CurTp = new Typeface((FontFamily)GetValue(TextBlock.FontFamilyProperty),
-                (FontStyle)GetValue(TextBlock.FontStyleProperty), (FontWeight)GetValue(TextBlock.FontWeightProperty),
-                (FontStretch)GetValue(TextBlock.FontStretchProperty));
             this.Height = LineHeight;
-            _Render = new DrawingContextPlotRender(LineHeight, CurTp);
+            if (_Render == null) //only setup renderer once
+            {
+                // At moment only grabs text styling at creation, could grab dynamically I suppose
+                Typeface CurTp = new Typeface((FontFamily)GetValue(TextBlock.FontFamilyProperty),
+                    (FontStyle)GetValue(TextBlock.FontStyleProperty), (FontWeight)GetValue(TextBlock.FontWeightProperty),
+                    (FontStretch)GetValue(TextBlock.FontStretchProperty));
+                _Render = new DrawingContextPlotRender(LineHeight, CurTp);
+                //_Render.FontSize = 12; // little bigger than half high text?
+            }
         }
         static PlotCommitElement()
         {
@@ -125,6 +130,7 @@ namespace GitSharp.Demo.HistoryGraph
         {
             base.OnRender(dc);
             // Does this force a 2nd draw? Would it be more efficient if fixed size?
+            // Should a pre-rendered visual be used?
             this.Width = _Render.DrawPlotCommit(CurrentCommit, dc);
         }
     } // END CLASS: PlotCommitElement
@@ -136,17 +142,21 @@ namespace GitSharp.Demo.HistoryGraph
     public class DrawingContextPlotRender : AbstractPlotRenderer<Brush>
     {
         public int Height;              // Overall Height of the Block we are drawing to
-        public Typeface CurTypeface;    // For text drawing - Typeface
-        public double FontSize;         // For text drawing - Size
+        public Typeface CurTypeface;    // For text/label drawing - Typeface
+        public double FontSize;         // For text/label drawing - Font Size
+        public double TextMaxWidth;     // For text drawing - limits the width
         public double LabelMaxWidth;    // For label drawing - limits the width
         public int LabelMargin;         // For label drawing - trailing space after label
+        public Pen LabelOutline;        // For label drawing - Optional outlie
         private DrawingContext _DC;
         private double _MaxX;
 
         public DrawingContextPlotRender()
         {
-            LabelMaxWidth = 100;
+            TextMaxWidth = 0;
+            LabelMaxWidth = 0;// 100;   // Should we limit label size or let it ride?
             LabelMargin = 2;
+            LabelOutline = new Pen(Brushes.Blue, 1);    // Set to null for none
         }
         public DrawingContextPlotRender(int H, Typeface Tp)
             : this()
@@ -176,23 +186,27 @@ namespace GitSharp.Demo.HistoryGraph
 
         protected override int drawLabel(int x, int y, Core.Ref @ref)
         {
+            int LabelWidth;
             FormattedText Tx = new FormattedText(@ref.Name, System.Globalization.CultureInfo.CurrentUICulture,
                 FlowDirection.LeftToRight, CurTypeface, FontSize, Brushes.White);
-            Tx.MaxTextWidth = LabelMaxWidth;    //limit width of label
+            Tx.MaxTextWidth = LabelMaxWidth;    //limit width of label text
             Tx.MaxTextHeight = Height;
-            // need to draw color background
-            Point TxOrg = new Point(x, y - FontSize / 2); // given y is center, need top
-            Point TxEnd = new Point(TxOrg.X + Tx.Width, TxOrg.Y + Tx.Height);
-            _DC.DrawRectangle(Brushes.CornflowerBlue, null, new Rect(TxOrg, TxEnd));
+            // need to draw color background (oversize rect by one in each direction)
+            Point TxOrg = new Point(x -1, y - FontSize / 2 -1); // given y is center, need top
+            Point TxEnd = new Point(TxOrg.X + Tx.Width +2, TxOrg.Y + Tx.Height +2);
+            LabelWidth = (int)(TxEnd.X - TxOrg.X + 1);
+            _DC.DrawRectangle(Brushes.CornflowerBlue, LabelOutline, new Rect(TxOrg, TxEnd));
+            TxOrg.Offset(1, 1); //draw text inside of background rectangle
             _DC.DrawText(Tx, TxOrg);
             if (_MaxX < TxEnd.X) _MaxX = TxEnd.X; //push out max X
-            return (int)Math.Ceiling(Tx.Width) + LabelMargin;
+            return LabelWidth + LabelMargin;
         }
 
         protected override void drawText(string msg, int x, int y)
         {
             FormattedText Tx = new FormattedText(msg, System.Globalization.CultureInfo.CurrentUICulture,
                 FlowDirection.LeftToRight, CurTypeface, FontSize, Brushes.White);
+            Tx.MaxTextWidth = TextMaxWidth;
             Tx.MaxTextHeight = Height;
             double Xend = Tx.Width + x;
             _DC.DrawText(Tx, new Point(x, y - FontSize / 2)); // given y is center, need top
