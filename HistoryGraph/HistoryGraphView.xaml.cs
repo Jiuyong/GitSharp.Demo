@@ -68,6 +68,13 @@ namespace GitSharp.Demo.HistoryGraph
             list.Source(m_revwalk);
             list.fillTo(1000);
             this.lstCommits.ItemsSource = list;
+            UpdateLegend();
+        }
+
+        private void UpdateLegend()
+        {
+            PlotCommitElement emt = new PlotCommitElement();
+            this.imgLegend.Source = new DrawingImage(emt.GetLegend().Drawing);
         }
 
         private void lstCommits_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -133,6 +140,8 @@ namespace GitSharp.Demo.HistoryGraph
             // Should a pre-rendered visual be used?
             this.Width = _Render.DrawPlotCommit(CurrentCommit, dc);
         }
+
+        public DrawingVisual GetLegend() { return _Render.GetLegend(); }
     } // END CLASS: PlotCommitElement
 
     
@@ -182,20 +191,93 @@ namespace GitSharp.Demo.HistoryGraph
             return _MaxX;
         }
 
+        public DrawingVisual GetLegend()
+        {
+            DrawingVisual visual = new DrawingVisual();
+            int x = 0;
+            using (DrawingContext dc = visual.RenderOpen())
+            {
+                _DC = dc;
+                // stuttering, since the first instance will be stripped
+                x += DrawLabelInBlock(x, 0, "refs/tags/refs/tags/");
+                x += DrawLabelInBlock(x, 0, "refs/heads/refs/heads/");
+                x += DrawLabelInBlock(x, 0, "refs/remotes/refs/remotes/");
+                x += DrawLabelInBlock(x, 0, "other");
+            }
+            _DC = null;
+            return visual;
+        }
+        
+        // Ref Name type extraction
+        public static string GetTagName(string RefName)
+        {
+            if (string.Compare(RefName, 0, "refs/tags/", 0, 10) == 0)
+            {
+                return RefName.Substring(10); //return just the unique bit
+                //return RefName; //return whole thing
+            }
+            return null;
+        }
+        public static string GetHeadName(string RefName)
+        {
+            if (string.Compare(RefName, 0, "refs/heads/", 0, 11) == 0)
+            {
+                return RefName.Substring(11); //return just the unique bit
+                //return RefName; //return whole thing
+            }
+            return null;
+        }
+        public static string GetRemoteName(string RefName)
+        {
+            if (string.Compare(RefName, 0, "refs/remotes/", 0, 13) == 0)
+            {
+                return RefName.Substring(13); //return just the unique bit
+                //return RefName; //return whole thing
+            }
+            return null;
+        }
+
         #region Overrides of AbstractPlotRenderer
 
         protected override int drawLabel(int x, int y, Core.Ref @ref)
         {
+            return DrawLabelInBlock(x, y, @ref.Name);
+        }
+
+        private int DrawLabelInBlock(int x, int y, string RefName)
+        {
             int LabelWidth;
-            FormattedText Tx = new FormattedText(@ref.Name, System.Globalization.CultureInfo.CurrentUICulture,
+            string PrintName = RefName;
+            Brush FillBrush = Brushes.CornflowerBlue; //regular color
+            // Render Tags in special way?
+            string TagName = GetTagName(PrintName);
+            string HeadName = GetHeadName(PrintName);
+            string RemoteName = GetRemoteName(PrintName);
+            if (TagName != null)
+            {
+                PrintName = TagName;
+                FillBrush = Brushes.DarkGreen; //TAG color
+            }
+            else if (HeadName != null)
+            {
+                PrintName = HeadName;
+                FillBrush = Brushes.DarkRed; //head color
+            }
+            else if (RemoteName != null)
+            {
+                PrintName = RemoteName;
+                FillBrush = Brushes.DarkBlue; //remote color
+            }
+
+            FormattedText Tx = new FormattedText(PrintName, System.Globalization.CultureInfo.CurrentUICulture,
                 FlowDirection.LeftToRight, CurTypeface, FontSize, Brushes.White);
             Tx.MaxTextWidth = LabelMaxWidth;    //limit width of label text
             Tx.MaxTextHeight = Height;
             // need to draw color background (oversize rect by one in each direction)
-            Point TxOrg = new Point(x -1, y - FontSize / 2 -1); // given y is center, need top
-            Point TxEnd = new Point(TxOrg.X + Tx.Width +2, TxOrg.Y + Tx.Height +2);
+            Point TxOrg = new Point(x - 1, y - FontSize / 2 - 1); // given y is center, need top
+            Point TxEnd = new Point(TxOrg.X + Tx.Width + 2, TxOrg.Y + Tx.Height + 2);
             LabelWidth = (int)(TxEnd.X - TxOrg.X + 1);
-            _DC.DrawRectangle(Brushes.CornflowerBlue, LabelOutline, new Rect(TxOrg, TxEnd));
+            _DC.DrawRectangle(FillBrush, LabelOutline, new Rect(TxOrg, TxEnd));
             TxOrg.Offset(1, 1); //draw text inside of background rectangle
             _DC.DrawText(Tx, TxOrg);
             if (_MaxX < TxEnd.X) _MaxX = TxEnd.X; //push out max X
