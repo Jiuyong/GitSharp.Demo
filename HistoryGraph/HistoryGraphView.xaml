@@ -32,6 +32,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <ListBox x:Name="lstCommits" VirtualizingStackPanel.IsVirtualizing="True" 
+                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                  Background="DarkGray" ScrollViewer.HorizontalScrollBarVisibility="Visible" 
                  SelectionChanged="lstCommits_SelectionChanged" ItemContainerStyle="{StaticResource ListItemStyle1}">
             <ListBox.ItemTemplate>

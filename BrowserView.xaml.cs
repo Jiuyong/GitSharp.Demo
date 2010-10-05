@@ -83,6 +83,7 @@ namespace GitSharp.Demo
 		{
 			if (commit == null || commit.Tree == null)
 				return;
+            m_history_graph.SelectedHash = commit.Hash;
 			m_commit_view.Commit = commit;
 			m_tree.ItemsSource = commit.Tree.Children;
 			m_tree_title.Content = "Repository tree of Commit " + commit.ShortHash;
@@ -105,9 +106,9 @@ namespace GitSharp.Demo
 		public void Update(Repository repository)
 		{
 			Repository = repository;
-			SelectCommit(Repository.Head.CurrentCommit);
 			m_history_graph.Update(Repository);
-		}
+            SelectCommit(Repository.Head.CurrentCommit);
+        }
 
 		#endregion
 	}

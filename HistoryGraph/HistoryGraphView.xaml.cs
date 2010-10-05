@@ -70,6 +70,14 @@ namespace GitSharp.Demo.HistoryGraph
             this.lstCommits.ItemsSource = list;
             UpdateLegend();
         }
+        public void Clear()
+        {
+            m_repo = null;
+            m_revwalk = null;
+            this.lstCommits.ItemsSource = null;
+            this.imgLegend.Source = null;
+            if (CommitClicked != null) CommitClicked(null);
+        }
 
         private void UpdateLegend()
         {
@@ -84,6 +92,30 @@ namespace GitSharp.Demo.HistoryGraph
                 return;
             var c = new Commit(m_repo, commit.Name);
             CommitClicked(c);
+        }
+
+        /// <summary>
+        /// Gets or Sets the selected commit via its SHA-1 hash
+        /// </summary>
+        public string SelectedHash
+        {
+            get
+            {
+                PlotCommit commit = lstCommits.SelectedItem as PlotCommit;
+                if (commit != null) return commit.Name;
+                return "";
+            }
+            set
+            {
+                foreach (PlotCommit cmt in this.lstCommits.Items)
+                {
+                    if (string.Compare(cmt.Name, value, true) == 0)
+                    {
+                        this.lstCommits.SelectedItem = cmt;
+                        return;
+                    }
+                }
+            }
         }
     } // END CLASS: HistoryGraphView
 
