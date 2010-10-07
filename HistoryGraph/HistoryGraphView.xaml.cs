@@ -41,6 +41,7 @@ using GitSharp.Core.RevPlot;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace GitSharp.Demo.HistoryGraph
 {
@@ -53,6 +54,7 @@ namespace GitSharp.Demo.HistoryGraph
 
         private Repository m_repo;
         private PlotWalk m_revwalk;
+        private Window m_WinParent;
 
         public HistoryGraphView()
         {
@@ -64,12 +66,28 @@ namespace GitSharp.Demo.HistoryGraph
             m_repo = repo;
             var list = new PlotCommitList();
             m_revwalk = new PlotWalk(repo);
+            // if id is not commit, parseCommit() will throw [This should probably be handled better]
+            //var CommitIds = ((Core.Repository)repo).getAllRefsByPeeledObjectId().Keys.Where(IsCommit);
+            //m_revwalk.markStart(CommitIds.Select(id => m_revwalk.parseCommit(id)));
             m_revwalk.markStart(((Core.Repository)repo).getAllRefsByPeeledObjectId().Keys.Select(id => m_revwalk.parseCommit(id)));
             list.Source(m_revwalk);
             list.fillTo(1000);
+            // link the commits
             this.lstCommits.ItemsSource = list;
-            UpdateLegend();
+            // link the jump lists
+            this.lstBranches.ItemsSource = m_repo.Branches;
+            this.lstRemotes.ItemsSource = m_repo.RemoteBranches;
+            this.lstTags.ItemsSource = m_repo.Tags;
+            UpdateLegend(); // update refs legend
+            this.lstCommits.UpdateLayout(); //fixes issue w/ ScrollIntoView when changing source
         }
+        /*private bool IsCommit(GitSharp.Core.AnyObjectId id)
+        {
+            try { m_revwalk.parseCommit(id); }
+            catch { return false; }
+            return true;
+        }*/
+
         public void Clear()
         {
             m_repo = null;
@@ -87,6 +105,7 @@ namespace GitSharp.Demo.HistoryGraph
 
         private void lstCommits_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            UpdateJumpLists();  //Update Jump Lists ?
             PlotCommit commit = lstCommits.SelectedItem as PlotCommit;
             if (CommitClicked == null || commit == null)
                 return;
@@ -95,7 +114,7 @@ namespace GitSharp.Demo.HistoryGraph
         }
 
         /// <summary>
-        /// Gets or Sets the selected commit via its SHA-1 hash
+        /// Gets or Sets the selected commit via its lowercase hexadecimal SHA-1 hash
         /// </summary>
         public string SelectedHash
         {
@@ -107,16 +126,138 @@ namespace GitSharp.Demo.HistoryGraph
             }
             set
             {
+                string NewValue = value.ToLower(); //hashes are lowercase, but this value might not
+                if (string.Compare(this.SelectedHash, NewValue) == 0) return;
                 foreach (PlotCommit cmt in this.lstCommits.Items)
                 {
-                    if (string.Compare(cmt.Name, value, true) == 0)
+                    if (string.Compare(cmt.Name, NewValue) == 0)
                     {
                         this.lstCommits.SelectedItem = cmt;
+                        // Do we assume scroll into view or provide as separate func?
+                        ScrollSelectedIntoView();
                         return;
                     }
                 }
             }
         }
+
+        public void ScrollSelectedIntoView()
+        {
+            try { this.lstCommits.ScrollIntoView(this.lstCommits.SelectedItem); }
+            catch { }
+            /*this.Dispatcher.BeginInvoke((Action)delegate()
+            {
+                try { this.lstCommits.ScrollIntoView(this.lstCommits.SelectedItem); }
+                catch { }
+            });*/
+        }
+
+        #region Jump Lists Functions
+        // (Could use checkbox styled as a button and bind IsChecked/IsOpen?)
+        private void cmdJumpList_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.popJumpList.IsOpen)
+            {
+                this.popJumpList.IsOpen = false;
+                this.cmdJumpList.ClearValue(BackgroundProperty);
+            }
+            else
+            {
+                // set size of popup based on current size
+                // Could just bind them in XAML ?
+                this.popJumpList.Width = this.ActualWidth;
+                this.popJumpList.Height = 150;// this.ActualHeight / 2;
+                this.popJumpList.IsOpen = true;
+                this.cmdJumpList.Background = this.brdJumpList.Background;// Brushes.DarkGray;
+            }
+        }
+
+        private void UpdateJumpLists()
+        {
+            this.lstBranches.SelectedItem = null;
+            this.lstRemotes.SelectedItem = null;
+            this.lstTags.SelectedItem = null;
+            /* This would slow down selections, graph already indicates current refs
+            string CurHash = this.SelectedHash;
+            if (string.IsNullOrEmpty(CurHash)) return;
+
+            // As all hashes are lowercase, keep compares simple case-sensitive
+            foreach (KeyValuePair<string,Tag> Tg in this.lstTags.Items)
+            {
+                if (string.Compare(Tg.Value.Target.Hash, CurHash) == 0)
+                {
+                    this.lstTags.SelectedItem = Tg;
+                    break;
+                }
+            }
+            foreach (KeyValuePair<string,Branch> Br in this.lstBranches.Items)
+            {
+                if (string.Compare(Br.Value.CurrentCommit.Hash, CurHash) == 0)
+                {
+                    this.lstBranches.SelectedItem = Br;
+                    break;
+                }
+            }
+            foreach (KeyValuePair<string, Branch> Br in this.lstRemotes.Items)
+            {
+                if (string.Compare(Br.Value.CurrentCommit.Hash, CurHash) == 0)
+                {
+                    this.lstRemotes.SelectedItem = Br;
+                    break;
+                }
+            }*/
+        }
+
+        private void lstTags_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (this.lstTags.SelectedItem != null)
+                {
+                    KeyValuePair<string, Tag> v = (KeyValuePair<string, Tag>)this.lstTags.SelectedItem;
+                    // assert fails for v.Value.Target with GitSharp repo
+                    //if (v.Value.Target != null) this.SelectedHash = v.Value.Target.Hash;
+                    //else this.SelectedHash = v.Value.Hash;
+                    this.SelectedHash = v.Value.Hash;
+                    if (string.Compare(this.SelectedHash, v.Value.Hash) != 0)
+                    {
+                        if (v.Value.Target != null) this.SelectedHash = v.Value.Target.Hash;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void lstBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox LB = sender as ListBox;
+            try
+            {
+                KeyValuePair<string, Branch> Br = (KeyValuePair<string, Branch>)LB.SelectedItem;
+                this.SelectedHash = Br.Value.CurrentCommit.Hash;
+            }
+            catch { }
+        }
+        #endregion  //Jump Lists Functions
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Need to kill popup on certain events since it floats
+            m_WinParent = Window.GetWindow(this);
+            if (m_WinParent != null)
+            {
+                m_WinParent.LocationChanged += new EventHandler(m_WinParent_LocationChanged);
+                m_WinParent.Deactivated += new EventHandler(m_WinParent_LocationChanged);
+            }
+        }
+
+        void m_WinParent_LocationChanged(object sender, EventArgs e)
+        {
+            //If popup is open, pretend user clicked the toggle
+            if (this.popJumpList.IsOpen) cmdJumpList_Click(null, null);
+        }
+
+
     } // END CLASS: HistoryGraphView
 
     
