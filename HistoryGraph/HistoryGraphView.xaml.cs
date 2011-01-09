@@ -75,9 +75,12 @@ namespace GitSharp.Demo.HistoryGraph
             // link the commits
             this.lstCommits.ItemsSource = list;
             // link the jump lists
-            this.lstBranches.ItemsSource = m_repo.Branches;
-            this.lstRemotes.ItemsSource = m_repo.RemoteBranches;
-            this.lstTags.ItemsSource = m_repo.Tags;
+            try { this.lstBranches.ItemsSource = m_repo.Branches; }
+            catch { this.lstBranches.ItemsSource = null; }
+            try { this.lstRemotes.ItemsSource = m_repo.RemoteBranches; }
+            catch { this.lstRemotes.ItemsSource = null; }
+            try { this.lstTags.ItemsSource = m_repo.Tags; }
+            catch { this.lstTags.ItemsSource = null; }
             UpdateLegend(); // update refs legend
             this.lstCommits.UpdateLayout(); //fixes issue w/ ScrollIntoView when changing source
         }
