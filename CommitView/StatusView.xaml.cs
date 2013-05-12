@@ -53,12 +53,7 @@ namespace GitSharp.Demo.CommitView
 		{
 			InitializeComponent();
 			m_status_list.SelectionChanged += OnStatusViewSelectionChanged;
-			Loaded += StatusView_Loaded;
-		}
-
-		void StatusView_Loaded(object sender, RoutedEventArgs e)
-		{
-			VisualStateManager.GoToElementState(this.Content as FrameworkElement, Chinese.Name, false);
+			Loaded += (s, e) => this.GoToChinese();
 		}
 
 		public void Update(Repository repo)

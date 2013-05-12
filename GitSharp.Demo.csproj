@@ -225,6 +225,7 @@
     <Compile Include="Controls\DockPanelSplitter.xaml.cs">
       <DependentUpon>DockPanelSplitter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Core.cs" />
     <Compile Include="HistoryGraph\HistoryGraphView.xaml.cs">
       <DependentUpon>HistoryGraphView.xaml</DependentUpon>
     </Compile>
