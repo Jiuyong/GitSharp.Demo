@@ -53,6 +53,18 @@
     					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem">
     						<DiscreteObjectKeyFrame KeyTime="0" Value="文件"/>
     					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="tabItem">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="浏览"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="tabItem1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="提交中"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="库："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="button">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="重新加载"/>
+    					</ObjectAnimationUsingKeyFrames>
     				</Storyboard>
     			</VisualState>
     		</VisualStateGroup>
@@ -67,7 +79,7 @@
         </Menu>
         <!--status bar-->
         <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Background="LightGray">
-            <Label Margin="0,0,5,0" Content="Repository:">
+            <Label x:Name="label" Margin="0,0,5,0" Content="Repository:">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Select repository path" Click="OnSelectRepository"/>
@@ -75,14 +87,14 @@
                 </Label.ContextMenu>
             </Label>
             <TextBox Name="m_url_textbox" MinWidth="100">.</TextBox>
-            <Button Click="OnLoadRepository" Margin="5,0,0,0">Reload</Button>
+            <Button x:Name="button" Click="OnLoadRepository" Margin="5,0,0,0">Reload</Button>
         </DockPanel>
         
         <TabControl Name="m_tab_control">
-            <TabItem Header="Browsing">
+            <TabItem x:Name="tabItem" Header="Browsing">
                 <Demo:BrowserView/>
             </TabItem>
-            <TabItem Header="Committing" >
+            <TabItem x:Name="tabItem1" Header="Committing" >
                 <CommitView:StatusView/>
             </TabItem>
         </TabControl>
