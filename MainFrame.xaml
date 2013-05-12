@@ -46,9 +46,20 @@
     TextOptions.TextHintingMode="Fixed"
     Title="GitSharp Demo" MinHeight="300" MinWidth="300">
     <DockPanel>
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="LanguageStates">
+    			<VisualState x:Name="Chinese">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="文件"/>
+    					</ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <!--menu-->
         <Menu  DockPanel.Dock="Top">
-            <MenuItem Header="File" >
+            <MenuItem x:Name="menuItem" Header="File" >
                 <MenuItem Header="Open repository ..." Click="OnSelectRepository"/>
                 <Separator />
                 <MenuItem Header="Exit" Click="OnMenuClose" />

@@ -63,6 +63,12 @@ namespace GitSharp.Demo
 			InitializeComponent();
 			m_url_textbox.Text = UserSettings.GetString(CURRENT_REPOSITORY);
 			Loaded += (o, args) => Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => LoadRepository(m_url_textbox.Text)));
+			Loaded += MainFrame_Loaded;
+		}
+
+		void MainFrame_Loaded(object sender, RoutedEventArgs e)
+		{
+			var r = VisualStateManager.GoToElementState(this.Content as FrameworkElement, Chinese.Name, false);
 		}
 
 
@@ -109,7 +115,7 @@ namespace GitSharp.Demo
 
 		private void OnMenuClose(object sender, RoutedEventArgs e)
 		{
-			this.Close();
+			App.Current.MainWindow.Close();
 			Application.Current.Shutdown();
 		}
 	}
