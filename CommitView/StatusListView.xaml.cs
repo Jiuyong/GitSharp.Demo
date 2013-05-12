@@ -55,6 +55,7 @@ namespace GitSharp.Demo
 		public StatusListView()
 		{
 			InitializeComponent();
+			Loaded+=(s,e)=>this.GoToChinese();
 		}
 
 		public event Action<IEnumerable<PathStatus>> SelectionChanged;

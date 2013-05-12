@@ -45,24 +45,44 @@
         <Demo:AuthorConverter x:Key="AuthorConverter"/>
     </UserControl.Resources>
     <DockPanel LastChildFill="False">
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="LaguageStates">
+    			<VisualState x:Name="Chinese">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="校验："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="说明："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label2">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="作者："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label3">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="时间："/>
+    					</ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <!--id-->
         <DockPanel DockPanel.Dock="Top">
-            <Label Width="60" HorizontalContentAlignment="Right" Margin="0,0,5,0">Hash:</Label>
+            <Label x:Name="label" Width="60" HorizontalContentAlignment="Right" Margin="0,0,5,0">Hash:</Label>
             <TextBox Text="{Binding Commit.Hash, Mode=OneWay}" IsReadOnly="True" HorizontalAlignment="Stretch" Background="Transparent" BorderThickness="0" VerticalAlignment="Center"/>
         </DockPanel>
         <!--Message -->
         <DockPanel DockPanel.Dock="Top">
-            <Label Width="60" VerticalAlignment="Top" HorizontalContentAlignment="Right"  Margin="0,0,5,0">Message:</Label>
+            <Label x:Name="label1" Width="60" VerticalAlignment="Top" HorizontalContentAlignment="Right"  Margin="0,0,5,0">Message:</Label>
             <TextBox Text="{Binding Commit.Message, Mode=OneWay}" IsReadOnly="True" HorizontalAlignment="Stretch" Background="Transparent" BorderThickness="0" TextWrapping="WrapWithOverflow" MaxHeight="100" VerticalScrollBarVisibility="Auto"  FontWeight="bold" VerticalAlignment="Center"/>
         </DockPanel>
         <!--Who -->
         <DockPanel DockPanel.Dock="Top">
-            <Label Width="60" VerticalAlignment="Top" HorizontalContentAlignment="Right" Margin="0,0,5,0">Author:</Label>
+            <Label x:Name="label2" Width="60" VerticalAlignment="Top" HorizontalContentAlignment="Right" Margin="0,0,5,0">Author:</Label>
             <TextBox Text="{Binding Commit.Author, Mode=OneWay, Converter={StaticResource AuthorConverter}}" IsReadOnly="True" HorizontalAlignment="Stretch" Background="Transparent" BorderThickness="0" TextWrapping="WrapWithOverflow" MaxHeight="100" VerticalScrollBarVisibility="Auto"  VerticalAlignment="Center"/>
         </DockPanel>
         <!--When -->
         <DockPanel DockPanel.Dock="Top">
-            <Label Width="60" VerticalAlignment="Top" HorizontalContentAlignment="Right" Margin="0,0,5,0">Time:</Label>
+            <Label x:Name="label3" Width="60" VerticalAlignment="Top" HorizontalContentAlignment="Right" Margin="0,0,5,0">Time:</Label>
             <TextBox Text="{Binding Commit.AuthorDate, Mode=OneWay}" IsReadOnly="True" HorizontalAlignment="Stretch" Background="Transparent" BorderThickness="0" TextWrapping="WrapWithOverflow" MaxHeight="100" VerticalScrollBarVisibility="Auto"  VerticalAlignment="Center"/>
         </DockPanel>
     </DockPanel>

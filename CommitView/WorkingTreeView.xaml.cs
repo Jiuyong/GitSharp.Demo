@@ -63,6 +63,7 @@ namespace GitSharp.Demo
 			InitializeComponent();
 			Height = double.NaN;
 			Width = double.NaN;
+			Loaded += (s, e) => this.GoToChinese();
 		}
 
 		public static IValueConverter StatusToColorConverter

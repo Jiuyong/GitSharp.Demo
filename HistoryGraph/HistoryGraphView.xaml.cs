@@ -59,6 +59,7 @@ namespace GitSharp.Demo.HistoryGraph
         public HistoryGraphView()
         {
             InitializeComponent();
+			Loaded+=(s,e)=>this.GoToChinese();
         }
 
         public void Update(Repository repo)

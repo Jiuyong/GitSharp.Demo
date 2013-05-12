@@ -65,6 +65,12 @@
     					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="button">
     						<DiscreteObjectKeyFrame KeyTime="0" Value="重新加载"/>
     					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="打开库 ..."/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem2">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="退出"/>
+    					</ObjectAnimationUsingKeyFrames>
     				</Storyboard>
     			</VisualState>
     		</VisualStateGroup>
@@ -72,9 +78,9 @@
         <!--menu-->
         <Menu  DockPanel.Dock="Top">
             <MenuItem x:Name="menuItem" Header="File" >
-                <MenuItem Header="Open repository ..." Click="OnSelectRepository"/>
+                <MenuItem x:Name="menuItem1" Header="Open repository ..." Click="OnSelectRepository"/>
                 <Separator />
-                <MenuItem Header="Exit" Click="OnMenuClose" />
+                <MenuItem x:Name="menuItem2" Header="Exit" Click="OnMenuClose" />
             </MenuItem>
         </Menu>
         <!--status bar-->

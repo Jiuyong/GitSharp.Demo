@@ -42,9 +42,41 @@
     xmlns:Demo="clr-namespace:GitSharp.Demo"
     MinHeight="300" MinWidth="300">
     <DockPanel>
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="LanguageGroups">
+    			<VisualState x:Name="Chinese">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="改动："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="暂存"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="放弃暂存"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem2">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="签出"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem3">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="提交暂存的改动"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem4">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="移除"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem5">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="删除（从索引和文件夹中）"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem6">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="签出暂存 （修改 到 暂存）"/>
+    					</ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <!--tree-->
         <DockPanel>
-            <Label DockPanel.Dock="Top"  Style="{StaticResource HeaderLabelStyle}">Changes</Label>
+            <Label x:Name="label" DockPanel.Dock="Top"  Style="{StaticResource HeaderLabelStyle}">Changes</Label>
             <ListView Name="m_list">
                 <ListView.View>
                     <GridView>
@@ -65,13 +97,13 @@
                 </ListView.View>
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Stage" Click="OnStage" />
-                        <MenuItem Header="Unstage" Click="OnUnstage" />
-                        <MenuItem Header="Checkout staged (Modified --> Staged)" Click="OnCheckoutIndex" />
-                        <MenuItem Header="Checkout" Click="OnCheckout" />
-                        <MenuItem Header="Remove from index" Click="OnRemove" />
-                        <MenuItem Header="Delete from index and directory" Click="OnDelete" />
-                        <MenuItem Header="Commit staged changes" Click="OnCommitIndex" />
+                        <MenuItem x:Name="menuItem" Header="Stage" Click="OnStage" />
+                        <MenuItem x:Name="menuItem1" Header="Unstage" Click="OnUnstage" />
+                        <MenuItem x:Name="menuItem6" Header="Checkout staged (Modified --> Staged)" Click="OnCheckoutIndex" />
+                        <MenuItem x:Name="menuItem2" Header="Checkout" Click="OnCheckout" />
+                        <MenuItem x:Name="menuItem4" Header="Remove from index" Click="OnRemove" />
+                        <MenuItem x:Name="menuItem5" Header="Delete from index and directory" Click="OnDelete" />
+                        <MenuItem x:Name="menuItem3" Header="Commit staged changes" Click="OnCommitIndex" />
                     </ContextMenu>
                 </ListView.ContextMenu>
             </ListView>

@@ -27,6 +27,29 @@
     <!-- Perhaps the listbox should be re-templated to have better selection appearance? -->
     <!-- Note: Horz Scrollbar is always visible to avoid strange behavior due to Virtualizing -->
     <Grid>
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="LanguageStates">
+    			<VisualState x:Name="Chinese">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="groupBox">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="标签"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="groupBox1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="分支"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="groupBox2">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="远程"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="cmdJumpList">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="跳转到 ..."/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<StringAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Text)" Storyboard.TargetName="textBlock">
+    						<DiscreteStringKeyFrame KeyTime="0" Value="参考图例："/>
+    					</StringAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -43,7 +66,7 @@
         </ListBox>
         <WrapPanel Grid.Row="1" x:Name="panelLegend" >
             <Button x:Name="cmdJumpList" Click="cmdJumpList_Click">Jump...</Button>
-            <TextBlock Margin="3">Refs Legend:</TextBlock>
+            <TextBlock x:Name="textBlock" Margin="3" Text="Refs Legend:"/>
             <Image x:Name="imgLegend" Stretch="None" />
         </WrapPanel>
         
@@ -56,15 +79,15 @@
             </Popup.Resources>
             <Border x:Name="brdJumpList" Background="DarkGray" BorderThickness="2">
                 <UniformGrid Columns="3" Margin="2">
-                    <GroupBox Header="Tags">
+                    <GroupBox x:Name="groupBox" Header="Tags">
                         <ListBox x:Name="lstTags" ItemTemplate="{StaticResource ListBranchTemplate}"
                                  SelectionChanged="lstTags_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible" />
                     </GroupBox>
-                    <GroupBox Header="Branches">
+                    <GroupBox x:Name="groupBox1" Header="Branches">
                         <ListBox x:Name="lstBranches" ItemTemplate="{StaticResource ListBranchTemplate}"
                                  SelectionChanged="lstBranches_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible" />
                     </GroupBox>
-                    <GroupBox Header="Remotes">
+                    <GroupBox x:Name="groupBox2" Header="Remotes">
                         <ListBox x:Name="lstRemotes" ItemTemplate="{StaticResource ListBranchTemplate}"
                                  SelectionChanged="lstBranches_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible" />
                     </GroupBox>

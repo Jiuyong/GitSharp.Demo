@@ -57,9 +57,20 @@
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel>
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="LanguageStates">
+    			<VisualState x:Name="Chinese">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="目录"/>
+    					</ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <!--tree-->
         <DockPanel>
-            <Label DockPanel.Dock="Top"  Style="{StaticResource HeaderLabelStyle}">Directories</Label>
+            <Label x:Name="label" DockPanel.Dock="Top"  Style="{StaticResource HeaderLabelStyle}">Directories</Label>
             <TreeView Name="m_directories"/>
         </DockPanel>
         <!--<Controls:DockPanelSplitter Width="4"/>-->

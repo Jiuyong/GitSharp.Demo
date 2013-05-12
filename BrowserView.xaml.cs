@@ -57,6 +57,7 @@ namespace GitSharp.Demo
 			m_tree.SelectedItemChanged += (o, args) => SelectObject(m_tree.SelectedValue as AbstractObject);
 			m_commit_diff.SelectionChanged += change => m_text_diff.Show(change);
 			m_history_graph.CommitClicked += SelectCommit;
+			Loaded += (s, e) => this.GoToChinese();
 		}
 
 		public Repository Repository { get; private set; }

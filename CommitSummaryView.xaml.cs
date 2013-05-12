@@ -61,6 +61,7 @@ namespace GitSharp.Demo
         {
             InitializeComponent();
             DataContext = this;
+			Loaded += (s, e) => this.GoToChinese();
         }
 
         private Commit m_commit;

@@ -42,18 +42,38 @@
     xmlns:Demo="clr-namespace:GitSharp.Demo"
     Title="CommitDialog" Height="300" Width="300">
     <DockPanel LastChildFill="True">
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="Language">
+    			<VisualState x:Name="Chinese">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="暂存的改动"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="提交信息说明"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="button">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="提交"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="button1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="取消"/>
+    					</ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <DockPanel DockPanel.Dock="Bottom" LastChildFill="False">
-            <Button IsCancel="True" DockPanel.Dock="Right" Margin="5" Click="Button_Click_1">Cancel</Button>
-            <Button IsDefault="True" DockPanel.Dock="Right" Margin="5" Click="Button_Click">Commit</Button>
+            <Button x:Name="button1" IsCancel="True" DockPanel.Dock="Right" Margin="5" Click="Button_Click_1">Cancel</Button>
+            <Button x:Name="button" IsDefault="True" DockPanel.Dock="Right" Margin="5" Click="Button_Click">Commit</Button>
         </DockPanel>
         <DockPanel DockPanel.Dock="Bottom" >
-            <Label DockPanel.Dock="Top">Commit message</Label>
+            <Label x:Name="label1" DockPanel.Dock="Top">Commit message</Label>
             <TextBox AcceptsReturn="True" AcceptsTab="True" Margin="5" VerticalScrollBarVisibility="Auto" Height="100" Name="m_message" TextWrapping="Wrap">
 
             </TextBox>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" >
-            <Label DockPanel.Dock="Top">Staged changes</Label>
+            <Label x:Name="label" DockPanel.Dock="Top">Staged changes</Label>
             <ListView DockPanel.Dock="Top" Name="m_list">
                 <ListView.View>
                     <GridView>

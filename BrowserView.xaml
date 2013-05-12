@@ -55,9 +55,35 @@
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel >
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="LanguageStates">
+    			<VisualState x:Name="Chinese">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="版本历史："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="m_refs_title">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="已选择的提交："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="m_tree_title">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="目录树（选中显示内容）："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="m_object_title">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="选中内容（Blob）："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="差异比较："/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="m_commit_title">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="此次提交差异（选择变动以显示差异）："/>
+    					</ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <!--commit history graph-->
         <DockPanel Width="400">
-            <Label DockPanel.Dock="Top" Style="{StaticResource HeaderLabelStyle}">Revision History</Label>
+            <Label x:Name="label" DockPanel.Dock="Top" Style="{StaticResource HeaderLabelStyle}">Revision History</Label>
             <HistoryGraph:HistoryGraphView x:Name="m_history_graph" DockPanel.Dock="Top" Height="300"/>
             <Controls:DockPanelSplitter DockPanel.Dock="Top"  Height="4"/>
 
@@ -65,9 +91,9 @@
 
             <Grid Grid.Row="2" DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <!--tree-->
                 <DockPanel  Grid.Column="0">
@@ -103,7 +129,7 @@
                     <Label DockPanel.Dock="Top"  Name="m_commit_title"  Style="{StaticResource HeaderLabelStyle}">Changes by this commit (select a modification to view the diff)</Label>
                     <Demo:CommitDiffView x:Name="m_commit_diff" DockPanel.Dock="Top"  />
                     <Controls:DockPanelSplitter DockPanel.Dock="Top"  Height="4"/>
-                    <Label DockPanel.Dock="Top"   Style="{StaticResource HeaderLabelStyle}">Differences</Label>
+                    <Label x:Name="label1" DockPanel.Dock="Top"   Style="{StaticResource HeaderLabelStyle}">Differences</Label>
                     <Demo:TextDiffView x:Name="m_text_diff" DockPanel.Dock="Top"  />
                 </DockPanel>
 

@@ -59,6 +59,7 @@ namespace GitSharp.Demo.CommitView
 			InitializeComponent();
 			Width = double.NaN;
 			Height = double.NaN;
+			Loaded += (s, e) => this.GoToChinese();
 		}
 
 		private Repository m_repository;

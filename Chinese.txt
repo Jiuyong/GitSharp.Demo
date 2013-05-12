@@ -1,1 +1,7 @@
-﻿
+﻿常见的翻译约定（其他翻译提交翻译时也应该在此注明翻译习惯，欢迎广大同学参与）：
+Change:改动
+Commit:提交
+Rebase:衍合
+Stage：暂存
+Unstage：放弃暂存
+Checkout：签出
