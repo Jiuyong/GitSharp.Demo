@@ -43,8 +43,19 @@
     xmlns:Controls="clr-namespace:GitSharp.Demo.Controls"
     MinHeight="300" MinWidth="300">
     <DockPanel>
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="LanguageGroups">
+    			<VisualState x:Name="Chinese">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="button">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="提交暂存的改动"/>
+    					</ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <StackPanel Orientation ="Horizontal" DockPanel.Dock="Top">
-            <Button Click="OnCommitButtonClick">Commit staged changes ...</Button>
+            <Button x:Name="button" Click="OnCommitButtonClick">Commit staged changes ...</Button>
         </StackPanel>
         <Demo:StatusListView x:Name="m_status_list"/>
         <Controls:DockPanelSplitter Width="4"/>
