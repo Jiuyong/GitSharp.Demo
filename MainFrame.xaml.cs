@@ -129,6 +129,12 @@ namespace GitSharp.Demo
 				App.Language = lan;
 			//}
 			this.GoToChinese();
+
+			//强制自定义控件重新加载，以更新界面语言。
+			var tic = m_tab_control.SelectedContent as FrameworkElement;
+			var ti = tic.Parent as TabItem;
+			ti.Content = null;
+			ti.Content = tic;
 		}
 	}
 }
