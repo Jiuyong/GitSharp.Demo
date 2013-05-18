@@ -45,7 +45,9 @@ namespace GitSharp.Demo
     /// </summary>
     public partial class App : Application
 	{
-		private static string _language= "";
+		public const string LanguageDefault = "English";
+
+		private static string _language= LanguageDefault;
 		public static string Language
 		{
 			get
@@ -58,7 +60,7 @@ namespace GitSharp.Demo
 				_language = value;
 				if (String.IsNullOrWhiteSpace(value))
 				{
-					_language = String.Empty;
+					_language = LanguageDefault;
 				}
 				//	OnPropertyChanged("Language");
 			}

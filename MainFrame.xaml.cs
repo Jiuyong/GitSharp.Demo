@@ -66,6 +66,8 @@ namespace GitSharp.Demo
 			App.Language = UserSettings.GetString(CURRENT_Language);
 			Loaded += (o, args) => Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => LoadRepository(m_url_textbox.Text)));
 			Loaded += (s, e) => this.GoToChinese();
+			this.Closed += (s, e) => UserSettings.SetValue(CURRENT_Language, App.Language);
+
 		}
 
 		Repository m_repository;
@@ -113,7 +115,6 @@ namespace GitSharp.Demo
 		{
 			//App.Current.MainWindow.Close();
 			Application.Current.Shutdown();
-			UserSettings.SetValue(CURRENT_Language, App.Language);
 		}
 
 		private void LanguageSelecter_Selected(object sender, RoutedEventArgs e)
