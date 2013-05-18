@@ -57,11 +57,13 @@ namespace GitSharp.Demo
 	public partial class MainFrame : Window
 	{
 		public const string CURRENT_REPOSITORY = "repository";
+		public const string CURRENT_Language = "language";
 
 		public MainFrame()
 		{
 			InitializeComponent();
 			m_url_textbox.Text = UserSettings.GetString(CURRENT_REPOSITORY);
+			App.Language = UserSettings.GetString(CURRENT_Language);
 			Loaded += (o, args) => Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => LoadRepository(m_url_textbox.Text)));
 			Loaded += (s, e) => this.GoToChinese();
 		}
@@ -109,8 +111,23 @@ namespace GitSharp.Demo
 
 		private void OnMenuClose(object sender, RoutedEventArgs e)
 		{
-			App.Current.MainWindow.Close();
+			//App.Current.MainWindow.Close();
 			Application.Current.Shutdown();
+			UserSettings.SetValue(CURRENT_Language, App.Language);
+		}
+
+		private void LanguageSelecter_Selected(object sender, RoutedEventArgs e)
+		{
+			var lan = (sender as MenuItem).Tag as string;
+			if (null==lan||"english"==lan.ToLower())//||""==lan
+			{
+				App.Language = "";
+			}
+			else
+			{
+				App.Language = lan;
+			}
+			this.GoToChinese();
 		}
 	}
 }

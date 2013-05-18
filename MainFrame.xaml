@@ -71,6 +71,12 @@
     					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem2">
     						<DiscreteObjectKeyFrame KeyTime="0" Value="退出"/>
     					</ObjectAnimationUsingKeyFrames>
+    					<BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="(MenuItem.IsChecked)" Storyboard.TargetName="menuItem3">
+    						<DiscreteBooleanKeyFrame KeyTime="0" Value="False"/>
+    					</BooleanAnimationUsingKeyFrames>
+    					<BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="(MenuItem.IsChecked)" Storyboard.TargetName="menuItem4">
+    						<DiscreteBooleanKeyFrame KeyTime="0" Value="True"/>
+    					</BooleanAnimationUsingKeyFrames>
     				</Storyboard>
     			</VisualState>
     		</VisualStateGroup>
@@ -81,6 +87,10 @@
                 <MenuItem x:Name="menuItem1" Header="Open repository ..." Click="OnSelectRepository"/>
                 <Separator />
                 <MenuItem x:Name="menuItem2" Header="Exit" Click="OnMenuClose" />
+            </MenuItem>
+            <MenuItem Header="Language">
+            	<MenuItem x:Name="menuItem3" Header="English" IsChecked="True" Click="LanguageSelecter_Selected" Tag="English"/>
+            	<MenuItem x:Name="menuItem4" Header="中文" Tag="Chinese" Click="LanguageSelecter_Selected"/>
             </MenuItem>
         </Menu>
         <!--status bar-->

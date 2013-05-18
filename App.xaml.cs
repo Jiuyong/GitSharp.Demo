@@ -36,6 +36,7 @@
  */
 
 using System.Windows;
+using System;
 
 namespace GitSharp.Demo
 {
@@ -43,6 +44,25 @@ namespace GitSharp.Demo
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    {
+	{
+		private static string _language= "";
+		public static string Language
+		{
+			get
+			{
+				return _language;
+			}
+
+			set
+			{
+				_language = value;
+				if (String.IsNullOrWhiteSpace(value))
+				{
+					_language = String.Empty;
+				}
+				//	OnPropertyChanged("Language");
+			}
+		}
+
     }
 }

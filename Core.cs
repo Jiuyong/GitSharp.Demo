@@ -11,7 +11,8 @@ namespace GitSharp.Demo
 	{
 		public static bool GoToChinese(this ContentControl cc)
 		{
-			return VisualStateManager.GoToElementState(cc.Content as FrameworkElement, "Chinese", false);
+			return VisualStateManager.GoToElementState(cc.Content as FrameworkElement, App.Language, false);
+			//return VisualStateManager.GoToElementState(cc.Content as FrameworkElement, "Chinese", false);
 		}
 	}
 }
