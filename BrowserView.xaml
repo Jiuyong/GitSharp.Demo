@@ -79,6 +79,28 @@
     					</ObjectAnimationUsingKeyFrames>
     				</Storyboard>
     			</VisualState>
+    			<VisualState x:Name="English">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Revision History"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="m_tree_title">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Source Tree (select to show content)"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="m_object_title">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Blob contents of selected tree node"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Differences"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="m_commit_title">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Changes by this commit (select a modification to view the diff)"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="m_refs_title">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Selected Commit"/>
+    					</ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
     		</VisualStateGroup>
     	</VisualStateManager.VisualStateGroups>
         <!--commit history graph-->

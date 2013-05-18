@@ -79,6 +79,34 @@
     					</BooleanAnimationUsingKeyFrames>
     				</Storyboard>
     			</VisualState>
+    			<VisualState x:Name="English">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="File"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Open repository ..."/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="menuItem2">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Exit"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="label">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Repository:"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="button">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Reload"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="tabItem">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Browsing"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(HeaderedContentControl.Header)" Storyboard.TargetName="tabItem1">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Committing"/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="(MenuItem.IsChecked)" Storyboard.TargetName="menuItem3">
+    						<DiscreteBooleanKeyFrame KeyTime="0" Value="True"/>
+    					</BooleanAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
     		</VisualStateGroup>
     	</VisualStateManager.VisualStateGroups>
         <!--menu-->
@@ -89,7 +117,7 @@
                 <MenuItem x:Name="menuItem2" Header="Exit" Click="OnMenuClose" />
             </MenuItem>
             <MenuItem Header="Language">
-            	<MenuItem x:Name="menuItem3" Header="English" IsChecked="True" Click="LanguageSelecter_Selected" Tag="English"/>
+            	<MenuItem x:Name="menuItem3" Header="English" Click="LanguageSelecter_Selected" Tag="English"/>
             	<MenuItem x:Name="menuItem4" Header="中文" Tag="Chinese" Click="LanguageSelecter_Selected"/>
             </MenuItem>
         </Menu>

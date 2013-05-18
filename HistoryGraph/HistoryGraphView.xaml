@@ -48,6 +48,16 @@
     					</StringAnimationUsingKeyFrames>
     				</Storyboard>
     			</VisualState>
+    			<VisualState x:Name="English">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentControl.Content)" Storyboard.TargetName="cmdJumpList">
+    						<DiscreteObjectKeyFrame KeyTime="0" Value="Jump..."/>
+    					</ObjectAnimationUsingKeyFrames>
+    					<StringAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Text)" Storyboard.TargetName="textBlock">
+    						<DiscreteStringKeyFrame KeyTime="0" Value="Refs Legend:"/>
+    					</StringAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
     		</VisualStateGroup>
     	</VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>

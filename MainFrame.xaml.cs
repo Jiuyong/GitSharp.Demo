@@ -119,14 +119,14 @@ namespace GitSharp.Demo
 		private void LanguageSelecter_Selected(object sender, RoutedEventArgs e)
 		{
 			var lan = (sender as MenuItem).Tag as string;
-			if (null==lan||"english"==lan.ToLower())//||""==lan
-			{
-				App.Language = "";
-			}
-			else
-			{
+			//if (null==lan||"english"==lan.ToLower())//||""==lan
+			//{
+			//    App.Language = "";
+			//}
+			//else
+			//{
 				App.Language = lan;
-			}
+			//}
 			this.GoToChinese();
 		}
 	}
